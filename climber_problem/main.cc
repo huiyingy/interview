@@ -1,14 +1,96 @@
 #include <stdio.h>
 #include <assert.h>
+#include <queue>
+#include <utility>
+#include <cmath>
+
 
 #define H_ARRAYSIZE(a) \
     ((sizeof(a) / sizeof(*(a))) / \
     static_cast<size_t>(!(sizeof(a) % sizeof(*(a)))))
 
+int aux_read(const char* input, int & j, int len){
+    int n = 0;
+    while(j<len && (input[j]==',' || input[j]=='\n') ){
+        j++;
+    }
+    if(j>=len )
+        return 0;
+    for (;j<len;j++)
+    {
+            if(input[j]!='\n' && input[j]!=',' ){
+                n *=10;
+                n += input[j]-'0';
+            }
+            else break;
+    }
+
+    return  n;
+}
+
+int aux_resolve(int array[][3],int n ){
+
+    int cur_x,cur_h = 0;
+    int pre_x=0,pre_h ;
+    int i =0;
+    std::priority_queue<std::pair<int,int>> pq;
+    int sum = 0;
+    while(!pq.empty() || i<n  ){
+        cur_x = pq.empty()?array[i][0]: pq.top().second;
+        
+
+        while(i<n && cur_x >= array[i][0] ){
+            if(array[i][2]>cur_h ){
+                cur_x = array[i][0];
+            }
+            pq.push(std::make_pair(array[i][2],array[i][1] ) );
+            i++;
+        }
+
+        while(!pq.empty() && pq.top().second<=cur_x ){
+            pq.pop();
+        }
+
+        pre_h = cur_h;
+        cur_h = pq.empty()? 0:pq.top().first;
+
+        //计算
+        sum += (cur_x-pre_x )+ abs(cur_h- pre_h);
+        pre_x = cur_x;
+
+       // printf("%d %d\n",cur_x,cur_h );
+
+    }
+
+    return sum;
+
+};
+
 int resolve(const char* input)
 {
-    return 0;
+
+    int len = strlen(input);
+    int j=0,n;
+    n = aux_read(input,j,len );
+
+    int (*p)[3]= new int[n][3];
+
+    for (int i = 0; i < n; ++i)
+    {
+        for (int k = 0; k < 3; ++k)
+        {
+            p[i][k] = aux_read(input,j,len );
+            //printf("%d ",p[i][k] );
+        }//printf("\n");
+    }
+
+
+    int tp = aux_resolve(p,n );
+    delete []p;
+    return tp;
 }
+
+
 
 int main(int argc, char* argv[]) 
 {
@@ -30,6 +112,7 @@ int main(int argc, char* argv[])
     for (size_t i = 0; i < H_ARRAYSIZE(input); ++i)
     {
         assert(resolve(input[i]) == expectedSteps[i]);
+        
     }
     return 0;
 }

@@ -2,8 +2,8 @@
 
 CC=gcc
 CXX=g++
-CFLAGS= -g -c -D_DEBUG -fPIC -Wshadow -Wcast-qual -Wcast-align -Wwrite-strings -Wsign-compare -Winvalid-pch -fms-extensions -Wall -MMD
-CPPFLAGS=$(CFLAGS) -Woverloaded-virtual -Wsign-promo -fno-gnu-keywords 
+CFLAGS= -g -c  -D_DEBUG -fPIC -Wshadow -Wcast-qual -Wcast-align -Wwrite-strings -Wsign-compare -Winvalid-pch -fms-extensions -Wall -MMD
+CPPFLAGS=$(CFLAGS)  -std=c++11  -Woverloaded-virtual -Wsign-promo -fno-gnu-keywords 
 
 SRCS := $(wildcard *.cc) 
 OBJS := $(patsubst %.cc, %.o, $(SRCS))
