@@ -97,7 +97,8 @@ namespace qh
         return sub_url;
     }
 
-    void ProxyURLExtractor::Extract( const KeyItems& keys, const std::string& raw_url, std::string& sub_url )
+    void ProxyURLExtractor::Extract( const KeyItems& keys, const std::string& raw_url,
+         std::string& sub_url )
     {
 
         Tokener token(raw_url);
@@ -113,7 +114,6 @@ namespace qh
                 if(key[i]=='&' )  count++;
             }
                         
-            //printf(" key:%s \n",key.data() );
             while(count!=0 ){
                 token.back();
                 if(token.current()=='&' ) count--;
